@@ -21,14 +21,18 @@ st.set_page_config(
 )
 
 # Custom CSS
+# Update the Custom CSS section with this improved version:
 st.markdown("""
     <style>
+        /* Base styles that work in both light and dark modes */
         .main {
-            background-color: #f5f7fa;
+            background-color: var(--background-color);
         }
         .stTextInput input, .stTextArea textarea {
             border-radius: 10px;
             padding: 10px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
         }
         .stButton button {
             background-color: #4a6fa5;
@@ -42,25 +46,47 @@ st.markdown("""
             background-color: #3a5a80;
         }
         .question-card {
-            background-color: white;
+            background-color: var(--card-bg);
+            color: var(--text-color);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .answer-card {
-            background-color: #f0f4f8;
+            background-color: var(--answer-bg);
+            color: var(--text-color);
             border-radius: 10px;
             padding: 20px;
             margin-top: 10px;
             border-left: 4px solid #4a6fa5;
         }
-        .header {
-            color: #2c3e50;
+        
+        /* Dark mode variables */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #0e1117;
+                --text-color: #f0f2f6;
+                --input-bg: #262730;
+                --card-bg: #1a1c24;
+                --answer-bg: #262730;
+            }
         }
-        .sidebar .sidebar-content {
-            background-color: #2c3e50;
-            color: white;
+        
+        /* Light mode variables */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --background-color: #f5f7fa;
+                --text-color: #2c3e50;
+                --input-bg: #ffffff;
+                --card-bg: #ffffff;
+                --answer-bg: #f0f4f8;
+            }
+        }
+        
+        /* Force dark text in specific elements if needed */
+        .stMarkdown, .stText, .stExpander {
+            color: var(--text-color) !important;
         }
     </style>
 """, unsafe_allow_html=True)
