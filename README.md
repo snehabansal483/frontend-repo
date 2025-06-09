@@ -14,11 +14,21 @@ The AI Interview Coach is a Streamlit-based web application designed to help job
 - 🏢 **Company-specific preparation**: Option to include specific companies in your preparation
 - 🌙 **Dark/Light mode**: Automatically adapts to your system preferences
 
-## Technology Stack
+## Tech Stack Architecture
 
-- **Frontend**: Streamlit (Python)
-- **Backend**: REST API (hosted separately)
-- **AI**: Google's Gemini AI (via backend)
+**Frontend**: 
+- 🖥️ Streamlit (Python) - [Live Demo](https://interview-coach-frontend.onrender.com/)
+- 🚀 Hosted on Render
+
+**Backend**: 
+- ⚙️ Flask REST API - [Live Demo](https://interview-coach-backend.onrender.com/)
+- 🚀 Hosted on Render
+
+**AI Core**:
+- 🧠 Google's Gemini AI (integrated via backend API)
+
+### Base URL
+`https://interview-coach-frontend.onrender.com/`
 
 ## Directory Structure
 
