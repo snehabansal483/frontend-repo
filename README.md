@@ -2,6 +2,14 @@
 
 ![AI Interview Coach Screenshot](https://github.com/snehabansal483/frontend-repo/blob/main/Screenshots/Ai%20Interview%20Coach.png)
 
+
+## 🔗 Related Repository
+
+This frontend application works in conjunction with the backend API available at:  
+👉 [snehabansal483/backend-repo](https://github.com/snehabansal483/backend-repo)
+
+The backend is a Flask-based REST API that powers the interview question generation using Google's Gemini AI.
+
 ## Overview
 
 The AI Interview Coach is a Streamlit-based web application designed to help job seekers prepare for interviews by generating tailored questions and model answers based on their target role, experience level, and background.
