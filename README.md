@@ -79,8 +79,10 @@ The application is configured to connect to a backend service at `https://interv
 
 ## Screenshots
 
+- Question Generation
 ![Question Generation Tab](https://github.com/snehabansal483/frontend-repo/blob/main/Screenshots/Questions%20generation.png) 
 
+- Answer Practice
 ![Answer Practice Tab](https://github.com/snehabansal483/frontend-repo/blob/main/Screenshots/Answer%20generation.png) 
 
 ## Contributing
