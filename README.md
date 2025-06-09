@@ -1,6 +1,6 @@
 # AI Interview Coach - Frontend Application
 
-![AI Interview Coach Screenshot]()
+![AI Interview Coach Screenshot](https://github.com/snehabansal483/frontend-repo/blob/main/Screenshots/Ai%20Interview%20Coach.png)
 
 ## Overview
 
@@ -32,10 +32,12 @@ The AI Interview Coach is a Streamlit-based web application designed to help job
 
 ## Directory Structure
 
-```
+```   
 snehabansal483-frontend-repo/
-├── app.py               # Main Streamlit application
-└── requirements.txt     # Python dependencies
+    ├── README.md            # Readme file
+    ├── app.py               # Main Streamlit application
+    ├── requirements.txt     # Python dependencies
+    └── Screenshots/         # Application screenshots
 ```
 
 ## Installation
@@ -77,9 +79,9 @@ The application is configured to connect to a backend service at `https://interv
 
 ## Screenshots
 
-![Question Generation Tab]() 
+![Question Generation Tab](https://github.com/snehabansal483/frontend-repo/blob/main/Screenshots/Questions%20generation.png) 
 
-![Answer Practice Tab]() 
+![Answer Practice Tab](https://github.com/snehabansal483/frontend-repo/blob/main/Screenshots/Answer%20generation.png) 
 
 ## Contributing
 
