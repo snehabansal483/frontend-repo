@@ -2,15 +2,6 @@ import streamlit as st
 import requests
 import json
 
-# Configuration
-BACKEND_URL = "https://interview-coach-backend.onrender.com/"  # Update if your backend is hosted elsewhere
-
-def call_backend(endpoint, data):
-    try:
-        response = requests.post(f"{BACKEND_URL}/{endpoint}", json=data)
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        return {"error": str(e)}
 
 # Page setup
 st.set_page_config(
@@ -19,6 +10,29 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+# Configuration
+BACKEND_URL = "https://interview-coach-backend.onrender.com/"  # Update if your backend is hosted elsewhere
+
+def is_backend_live():
+    try:
+        response = requests.get(f"{BACKEND_URL}/health")  # Assumes your backend has a /health or similar route
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
+
+# Conditional warning
+if not is_backend_live():
+    st.warning("⚠️ Make sure to run the backend server before using the AI Interview Coach.")
+
+
+def call_backend(endpoint, data):
+    try:
+        response = requests.post(f"{BACKEND_URL}/{endpoint}", json=data)
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        return {"error": str(e)}
+
+
 
 # Custom CSS
 # Update the Custom CSS section with this improved version:
