@@ -168,10 +168,15 @@ with tab1:
                     )
                     
                     if response.status_code == 200:
-                        questions = response.json().get("questions", "")
-                        st.session_state.questions_list = [q for q in questions.split("\n") if q.strip()]
-                        st.success(f"Questions tailored for {company_name}:")
-                        for i, question in enumerate(st.session_state.questions_list):
+                        questions = response.json().get("questions", [])
+                        # Store the original questions list in session state
+                        st.session_state.questions_list = questions
+                        st.session_state.job_role = job_role
+                        st.session_state.company_name = company_name
+                        st.session_state.project = project
+                        
+                        st.success(f"Questions tailored for {company_name or 'your target role'}:")
+                        for i, question in enumerate(questions):
                             with st.expander(f"Question {i+1}"):
                                 st.markdown(f"<div class='question-card'>{question}</div>", unsafe_allow_html=True)
                     else:
