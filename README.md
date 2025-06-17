@@ -34,7 +34,7 @@ The AI Interview Coach is a Streamlit-based web application designed to help job
 
  **Extension Download**: 
  
- - 📦 [Get it on Firefox Add-ons*](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)
+ - 📦 [Get it on Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)
 
 **AI Core**:
 - 🧠 Google's Gemini AI (integrated via backend API)
