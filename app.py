@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 import json
 
-
 # Page setup
 st.set_page_config(
     page_title="AI Interview Coach",
@@ -10,19 +9,26 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-# Configuration
-BACKEND_URL = "https://interview-coach-backend.onrender.com/"  # Update if your backend is hosted elsewhere
 
+
+# Configuration
+
+BACKEND_URL = "https://interview-coach-backend.onrender.com/"  # Update if your backend is hosted elsewhere
+# BACKEND_URL = "http://localhost:5000"
+# Conditional warning
+
+# Health check
 def is_backend_live():
     try:
-        response = requests.get(f"{BACKEND_URL}/health")  # Assumes your backend has a /health or similar route
+        response = requests.get(f"{BACKEND_URL}/health")
         return response.status_code == 200
     except requests.exceptions.RequestException:
         return False
 
-# Conditional warning
+# Conditional backend warning
 if not is_backend_live():
     st.warning("⚠️ Make sure to run the backend server before using the AI Interview Coach.")
+
 
 
 def call_backend(endpoint, data):
@@ -33,9 +39,8 @@ def call_backend(endpoint, data):
         return {"error": str(e)}
 
 
-
 # Custom CSS
-# Update the Custom CSS section with this improved version:
+
 st.markdown("""
     <style>
         /* Base styles that work in both light and dark modes */
@@ -104,7 +109,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-
 # Sidebar
 with st.sidebar:
     st.title("💼 AI Interview Coach")
@@ -119,13 +123,29 @@ with st.sidebar:
     st.markdown("2. Select your experience level")
     st.markdown("3. Get relevant questions")
     st.markdown("4. Practice with AI-generated answers")
+
     
     st.markdown("---")
     st.markdown("### About")
     st.markdown("This tool uses Google's Gemini AI to help you prepare for interviews by generating role-specific questions and model answers.")
 
+    st.markdown("---")
+    st.markdown("### 🔗 Extension Available")
+    st.markdown("""
+        Prefer using the tool directly in your browser?  
+        👉 [Download Firefox Extension](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)  
+        Use the AI Interview Coach without opening the website!
+    """)
+
+
 # Main content
 st.title("AI Interview Coach")
+st.markdown("""
+    📌 **Now also available as a Firefox extension!**  
+    [👉 Click here to install it from Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)  
+    Access the AI Interview Coach instantly from your browser.
+""")
+
 st.markdown("""
     Prepare for your next job interview with personalized questions and expert-crafted answers 
     tailored to your target role and experience level.
@@ -181,7 +201,6 @@ with tab1:
                                 st.markdown(f"<div class='question-card'>{question}</div>", unsafe_allow_html=True)
                     else:
                         st.error(f"Error: {response.json().get('error', 'Unknown error')}")
-
 with tab2:
     st.header("Practice with Model Answers")
     
