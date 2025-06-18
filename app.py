@@ -142,7 +142,7 @@ with st.sidebar:
 st.title("AI Interview Coach")
 st.markdown("""
     📌 **Now also available as a Firefox extension!**  
-    [👉 Click here to install it from Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)  
+    👉  [Click here to install it from Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)  
     Access the AI Interview Coach instantly from your browser.
 """)
 
