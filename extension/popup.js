@@ -1,3 +1,5 @@
+// Full popup.js file with DOMPurify sanitation
+
 const backend = "https://interview-coach-backend.onrender.com/";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -59,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = await res.json();
-      // Handle both array and string response formats
       let questions = Array.isArray(data.questions) ? 
         data.questions : 
         (data.questions || "").split("\n").filter(q => q.trim());
@@ -67,14 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (questions.length === 0) throw new Error("No questions generated");
 
       renderQuestions(questions);
-      
-      // Store the job role for answer generation
       document.getElementById("jobRoleAnswer").value = jobRole;
-      
-      // Auto switch to Practice tab and select first question
       tabAnswers.click();
       if (questionSelect.options.length > 1) {
-        questionSelect.selectedIndex = 1; // Select first question
+        questionSelect.selectedIndex = 1;
       }
     } catch (error) {
       showError(error.message);
@@ -131,30 +128,26 @@ document.addEventListener("DOMContentLoaded", () => {
     questionSelect.innerHTML = `<option disabled selected>-- Select a question --</option>`;
 
     questions.forEach((q, idx) => {
-      // Clean up question text (remove numbers if present)
       const cleanQuestion = q.replace(/^\d+\.\s*/, '').trim();
-      
-      // Add to questions container
+
       const div = document.createElement("div");
       div.className = "card question-card";
-      div.textContent = `<strong>Q${idx + 1}:</strong> ${cleanQuestion}`;
+      div.innerHTML = DOMPurify.sanitize(`<strong>Q${idx + 1}:</strong> ${cleanQuestion}`);
       questionsContainer.appendChild(div);
 
-      // Add to question select dropdown
       const option = document.createElement("option");
       option.value = cleanQuestion;
-      // Truncate long questions for dropdown display
       const displayText = cleanQuestion.length > 50 ? 
         cleanQuestion.substring(0, 47) + "..." : 
         cleanQuestion;
-      option.textContent = `Q${idx + 1}: ${displayText}`;
-      option.title = cleanQuestion; // Show full question on hover
+      option.innerHTML = DOMPurify.sanitize(`Q${idx + 1}: ${displayText}`);
+      option.title = cleanQuestion;
       questionSelect.appendChild(option);
     });
   }
 
   function renderAnswer(answer) {
-    answerContainer.textContent = `
+    answerContainer.innerHTML = DOMPurify.sanitize(`
       <div class="card answer-card">
         <strong>Suggested Answer:</strong><br><br>
         ${answer.replace(/\n/g, '<br>')}
@@ -168,14 +161,14 @@ document.addEventListener("DOMContentLoaded", () => {
           <li>Highlight your achievements</li>
         </ul>
       </div>
-    `;
+    `);
   }
 
   function showError(message) {
     const errorDiv = document.createElement("div");
     errorDiv.className = "card error-card";
-    errorDiv.textContent = `<strong>Error:</strong> ${message}`;
-    
+    errorDiv.innerHTML = DOMPurify.sanitize(`<strong>Error:</strong> ${message}`);
+
     if (tab1.classList.contains("active")) {
       questionsContainer.innerHTML = "";
       questionsContainer.appendChild(errorDiv);
