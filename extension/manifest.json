@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "AI Interview Coach",
-  "version": "1.0",
+  "version": "2.0",
   "description": "Get tailored interview questions and model answers using Gemini AI.",
   "browser_action": {
     "default_popup": "popup.html",
