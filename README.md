@@ -1,6 +1,19 @@
 # AI Interview Coach - Frontend Application
 
-![AI Interview Coach Screenshot](https://github.com/snehabansal483/frontend-repo/blob/main/Screenshots/Ai%20Interview%20Coach.png)
+---
+
+## 🚀 Demo
+
+> **🎥 Click to watch the demo:**  
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=uj4IVj0S-T8" target="_blank">
+    <img src="https://github.com/snehabansal483/frontend-repo/blob/main/Screenshots/Ai%20Interview%20Coach.png" alt="Watch the demo" style="width: 80%; max-width: 600px;" />
+  </a>
+</p>
+
+---
+
+
 
 
 ## 🔗 Related Repository
