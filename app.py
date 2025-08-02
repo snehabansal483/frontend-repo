@@ -1,17 +1,15 @@
 import streamlit as st
 import requests
 import json
+import time
 
-# Configuration
-BACKEND_URL = "https://interview-coach-backend.onrender.com/"  # Update if your backend is hosted elsewhere
-
-def call_backend(endpoint, data):
-    try:
-        response = requests.post(f"{BACKEND_URL}/{endpoint}", json=data)
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        return {"error": str(e)}
-
+# Page setup
+st.set_page_config(
+    page_title="AI Interview Coach",
+    page_icon="💼",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Configuration
 BACKEND_URL = "https://interview-coach-backend.onrender.com/"  # Change if needed
@@ -57,7 +55,6 @@ def call_backend(endpoint, data):
         return {"error": str(e)}
 
 # Custom CSS
-# Update the Custom CSS section with this improved version:
 st.markdown("""
     <style>
         .main {
@@ -122,10 +119,10 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
 # Sidebar
 with st.sidebar:
     st.title("💼 AI Interview Coach")
-    
     st.markdown("""
         **Your personal interview preparation assistant**  
         Get tailored interview questions and expert answers for your dream job.
@@ -137,13 +134,64 @@ with st.sidebar:
     st.markdown("2. Select your experience level")
     st.markdown("3. Get relevant questions")
     st.markdown("4. Practice with AI-generated answers")
-    
+
     st.markdown("---")
     st.markdown("### About")
     st.markdown("This tool uses Google's Gemini AI to help you prepare for interviews by generating role-specific questions and model answers.")
 
+    st.markdown("---")
+    st.markdown("### 🔗 Extension Available")
+    st.markdown("""
+        👉 [Download Firefox Extension](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)  
+        Use the AI Interview Coach directly from your browser!
+    """)
+
+    st.markdown("---")
+    st.markdown("### 🚀 Backend not responding?")
+    st.markdown(f"""
+        <a href="{BACKEND_URL}" target="_blank">
+            <button style="
+                background-color: #f39c12;
+                color: white;
+                padding: 8px 18px;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 8px;
+            ">
+                Wake Up Backend
+            </button>
+        </a>
+    """, unsafe_allow_html=True)
+
 # Main content
 st.title("AI Interview Coach")
+st.markdown(f"""
+    <div style="margin-top: -10px; margin-bottom: 20px; display: flex; justify-content: flex-end;">
+        <a href="{BACKEND_URL}" target="_blank">
+            <button style="
+                background-color: #fceacb;
+                color: #333;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 10px;
+                font-size: 15px;
+                font-weight: bold;
+                cursor: pointer;
+            ">
+                🔄Wake Up Backend 
+            </button>
+        </a>
+    </div>
+""", unsafe_allow_html=True)
+st.markdown("""
+    📌 **Now also available as a Firefox extension!**  
+    👉 [Click here to install it from Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)  
+    Access the AI Interview Coach instantly from your browser.
+""")
+
 st.markdown("""
     Prepare for your next job interview with personalized questions and expert-crafted answers 
     tailored to your target role and experience level.
@@ -186,14 +234,19 @@ with tab1:
                     )
                     
                     if response.status_code == 200:
-                        questions = response.json().get("questions", "")
-                        st.session_state.questions_list = [q for q in questions.split("\n") if q.strip()]
-                        st.success(f"Questions tailored for {company_name}:")
-                        for i, question in enumerate(st.session_state.questions_list):
+                        questions = response.json().get("questions", [])
+                        st.session_state.questions_list = questions
+                        st.session_state.job_role = job_role
+                        st.session_state.company_name = company_name
+                        st.session_state.project = project
+                        
+                        st.success(f"Questions tailored for {company_name or 'your target role'}:")
+                        for i, question in enumerate(questions):
                             with st.expander(f"Question {i+1}"):
                                 st.markdown(f"<div class='question-card'>{question}</div>", unsafe_allow_html=True)
                     else:
                         st.error(f"Error: {response.json().get('error', 'Unknown error')}")
+
 with tab2:
     st.header("Practice with Model Answers")
     
