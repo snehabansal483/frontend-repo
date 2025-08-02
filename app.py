@@ -2,34 +2,8 @@ import streamlit as st
 import requests
 import json
 
-# Page setup
-st.set_page_config(
-    page_title="AI Interview Coach",
-    page_icon="💼",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
-
 # Configuration
-
 BACKEND_URL = "https://interview-coach-backend.onrender.com/"  # Update if your backend is hosted elsewhere
-# BACKEND_URL = "http://localhost:5000"
-# Conditional warning
-
-# Health check
-def is_backend_live():
-    try:
-        response = requests.get(f"{BACKEND_URL}/health")
-        return response.status_code == 200
-    except requests.exceptions.RequestException:
-        return False
-
-# Conditional backend warning
-if not is_backend_live():
-    st.warning("⚠️ Make sure to run the backend server before using the AI Interview Coach.")
-
-
 
 def call_backend(endpoint, data):
     try:
@@ -39,11 +13,53 @@ def call_backend(endpoint, data):
         return {"error": str(e)}
 
 
-# Custom CSS
+# Configuration
+BACKEND_URL = "https://interview-coach-backend.onrender.com/"  # Change if needed
 
+# Health check
+def is_backend_live():
+    try:
+        response = requests.get(f"{BACKEND_URL}/health", timeout=5)
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
+
+# Conditional backend warning
+if not is_backend_live():
+    st.warning(
+        "⚠️ The backend server is currently not responding. "
+        "If it's hosted on Render, it may be asleep."
+    )
+    st.markdown(f"""
+        <a href="{BACKEND_URL}" target="_blank">
+            <button style="
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                margin-top: 10px;
+            ">
+                🚀 Click Here to Wake Up Backend
+            </button>
+        </a>
+    """, unsafe_allow_html=True)
+
+# Function to call backend
+def call_backend(endpoint, data):
+    try:
+        response = requests.post(f"{BACKEND_URL}/{endpoint}", json=data)
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        return {"error": str(e)}
+
+# Custom CSS
+# Update the Custom CSS section with this improved version:
 st.markdown("""
     <style>
-        /* Base styles that work in both light and dark modes */
         .main {
             background-color: var(--background-color);
         }
@@ -80,8 +96,7 @@ st.markdown("""
             margin-top: 10px;
             border-left: 4px solid #4a6fa5;
         }
-        
-        /* Dark mode variables */
+
         @media (prefers-color-scheme: dark) {
             :root {
                 --background-color: #0e1117;
@@ -91,8 +106,7 @@ st.markdown("""
                 --answer-bg: #262730;
             }
         }
-        
-        /* Light mode variables */
+
         @media (prefers-color-scheme: light) {
             :root {
                 --background-color: #f5f7fa;
@@ -102,8 +116,7 @@ st.markdown("""
                 --answer-bg: #f0f4f8;
             }
         }
-        
-        /* Force dark text in specific elements if needed */
+
         .stMarkdown, .stText, .stExpander {
             color: var(--text-color) !important;
         }
@@ -112,6 +125,7 @@ st.markdown("""
 # Sidebar
 with st.sidebar:
     st.title("💼 AI Interview Coach")
+    
     st.markdown("""
         **Your personal interview preparation assistant**  
         Get tailored interview questions and expert answers for your dream job.
@@ -123,29 +137,13 @@ with st.sidebar:
     st.markdown("2. Select your experience level")
     st.markdown("3. Get relevant questions")
     st.markdown("4. Practice with AI-generated answers")
-
     
     st.markdown("---")
     st.markdown("### About")
     st.markdown("This tool uses Google's Gemini AI to help you prepare for interviews by generating role-specific questions and model answers.")
 
-    st.markdown("---")
-    st.markdown("### 🔗 Extension Available")
-    st.markdown("""
-        Prefer using the tool directly in your browser?  
-        👉 [Download Firefox Extension](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)  
-        Use the AI Interview Coach without opening the website!
-    """)
-
-
 # Main content
 st.title("AI Interview Coach")
-st.markdown("""
-    📌 **Now also available as a Firefox extension!**  
-    👉  [Click here to install it from Firefox Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/ai-interview-coach/)  
-    Access the AI Interview Coach instantly from your browser.
-""")
-
 st.markdown("""
     Prepare for your next job interview with personalized questions and expert-crafted answers 
     tailored to your target role and experience level.
@@ -188,15 +186,10 @@ with tab1:
                     )
                     
                     if response.status_code == 200:
-                        questions = response.json().get("questions", [])
-                        # Store the original questions list in session state
-                        st.session_state.questions_list = questions
-                        st.session_state.job_role = job_role
-                        st.session_state.company_name = company_name
-                        st.session_state.project = project
-                        
-                        st.success(f"Questions tailored for {company_name or 'your target role'}:")
-                        for i, question in enumerate(questions):
+                        questions = response.json().get("questions", "")
+                        st.session_state.questions_list = [q for q in questions.split("\n") if q.strip()]
+                        st.success(f"Questions tailored for {company_name}:")
+                        for i, question in enumerate(st.session_state.questions_list):
                             with st.expander(f"Question {i+1}"):
                                 st.markdown(f"<div class='question-card'>{question}</div>", unsafe_allow_html=True)
                     else:
@@ -221,7 +214,7 @@ with tab2:
         
         context = st.text_area("Additional Context About You", height=100,
                              placeholder="e.g., I led a team of 3 developers...")
-        
+
         if st.button("Generate Answer"):
             with st.spinner("Generating expert answer..."):
                 response = requests.post(
