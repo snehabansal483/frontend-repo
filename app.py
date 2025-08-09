@@ -28,24 +28,6 @@ if not is_backend_live():
         "⚠️ The backend server is currently not responding. "
         "If it's hosted on Render, it may be asleep."
     )
-    st.markdown(f"""
-        <a href="{BACKEND_URL}" target="_blank">
-            <button style="
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 10px;
-                font-size: 16px;
-                font-weight: bold;
-                cursor: pointer;
-                margin-top: 10px;
-            ">
-                🚀 Click Here to Wake Up Backend
-            </button>
-        </a>
-    """, unsafe_allow_html=True)
-
 # Function to call backend
 def call_backend(endpoint, data):
     try:
